@@ -1,9 +1,11 @@
 const express = require('express');
 const jsonwebtoken = require('jsonwebtoken');
-
+const dotenv = require('dotenv');
 const app = express();
 
 const datas = require('./data.js');
+
+dotenv.config();
 
 // allow cors
 app.use((req, res, next) => {
@@ -14,17 +16,18 @@ app.use((req, res, next) => {
 app.get('/auth', (req, res) => {
     // verify with a basic token
     let basicToken = req.headers?.authorization?.split(' ')[1];
-    if (!basicToken && basicToken !== "a5c0104b-61eb-46e1-8ada-76ad88c5c456") res.status(401).json({
+    console.log(basicToken, process.env.BASIC_TOKEN, basicToken !== process.env.BASIC_TOKEN);
+    if (!basicToken || basicToken !== process.env.BASIC_TOKEN) res.status(401).json({
         message: 'Unauthorized'
     });
     let data = {
         name: 'Saravana Raja',
         email: 'saravanaraja@demo.com'
     };
-    const token = jsonwebtoken.sign(data, "YOYOYOSARAVANARAJA");
+    const token = jsonwebtoken.sign(data, process.env.JWT_SECRET);
     res.json({
         access_token: token
-    });
+    }).status(200);
 });
 
 function authMiddleware(req, res, next) {
@@ -33,7 +36,7 @@ function authMiddleware(req, res, next) {
         message: 'Unauthorized'
     });
     try {
-        let data = jsonwebtoken.verify(token, "YOYOYOSARAVANARAJA");
+        let data = jsonwebtoken.verify(token, process.env.JWT_SECRET);
         req.user = data;
         next();
     } catch (error) {
