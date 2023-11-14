@@ -1,4 +1,4 @@
-const data = {
+module.exports = {
   t_id: "R2023493",
   name: "The RSM Classic",
   players: [
@@ -1864,6 +1864,3 @@ const data = {
     },
   ],
 };
-
-
-module.exports = data;
