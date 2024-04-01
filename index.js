@@ -6,6 +6,7 @@ const app = express();
 const memberTournamentPayoutData = require("./memberTournamentPayoutData.js");
 const syndGroupingsData = require("./syndGroupingsData.js");
 const syndScorecardData = require("./syndScorecardData.js");
+const popTimechartData = require("./popTimechartData.js");
 
 dotenv.config();
 
@@ -41,6 +42,7 @@ app.get("/auth", (req, res) => {
 
 function authMiddleware(req, res, next) {
   let token = req.headers?.authorization?.split(" ")[1];
+  console.log(req.headers);
   if (!token)
     res.status(401).json({
       message: "Unauthorized",
@@ -66,6 +68,10 @@ app.get("/syndGrouping", authMiddleware, (req, res) => {
 
 app.get("/syndScorecard", authMiddleware, (req, res) => {
   res.json(syndScorecardData).status(200);
+});
+
+app.get("/popTimechart", authMiddleware, (req, res) => {
+  res.json(popTimechartData).status(200);
 });
 
 // run the server
