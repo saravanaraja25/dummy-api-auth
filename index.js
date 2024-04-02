@@ -2,13 +2,16 @@ const express = require("express");
 const jsonwebtoken = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const app = express();
+const cors = require("cors");
 
 const memberTournamentPayoutData = require("./memberTournamentPayoutData.js");
 const syndGroupingsData = require("./syndGroupingsData.js");
 const syndScorecardData = require("./syndScorecardData.js");
 const popTimechartData = require("./popTimechartData.js");
 
+
 dotenv.config();
+app.use(cors());
 
 // allow cors
 app.use((req, res, next) => {
